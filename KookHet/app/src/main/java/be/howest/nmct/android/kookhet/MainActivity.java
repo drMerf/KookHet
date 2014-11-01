@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks, CategorieenFragment.OnFragmentInteractionListener, ReceptenFragment.OnFragmentInteractionListener {
 
     // Fragment managing the behaviors, interactions and presentation of the navigation drawer.
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -40,22 +40,22 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         FragmentManager fragmentManager = getFragmentManager();
         switch (position){
             case 0:
-                fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance()).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, CategorieenFragment.newInstance(position + 1)).commit();
                 break;
             case 1:
-                fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance()).commit();
+                //fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(null, null)).commit();
                 break;
             case 2:
-                fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance()).commit();
+                //fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(null, null)).commit();
                 break;
             case 3:
-                fragmentManager.beginTransaction().replace(R.id.container, InstellingenFragment.newInstance()).commit();
+                //fragmentManager.beginTransaction().replace(R.id.container, InstellingenFragment.newInstance()).commit();
                 break;
             default:
                 fragmentManager.beginTransaction().replace(R.id.container, PlaceholderFragment.newInstance(position + 1)).commit();
                 break;
         }
-        fragmentManager.beginTransaction().replace(R.id.container, PlaceholderFragment.newInstance(position + 1)).commit();
+        //fragmentManager.beginTransaction().replace(R.id.container, PlaceholderFragment.newInstance(position + 1)).commit();
     }
 
     public void onSectionAttached(int number) {
@@ -82,6 +82,10 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         actionBar.setTitle(mTitle);
     }
 
+    @Override
+    public void onFragmentInteraction(String id) {
+        // TODO Iets, geen idee wat
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
