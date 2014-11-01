@@ -23,11 +23,9 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int mParam1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -38,11 +36,10 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
     private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
-    public static ReceptenFragment newInstance(String param1, String param2) {
+    public static ReceptenFragment newInstance(int param1) {
         ReceptenFragment fragment = new ReceptenFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,12 +53,11 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getInt(ARG_PARAM1);
         }
 
         // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.Categorie>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.CATEGORIEEN);
+        mAdapter = new ArrayAdapter<DummyContent.Recept>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.RECEPTEN);
     }
 
     @Override
@@ -98,7 +94,7 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.CATEGORIEEN.get(position).id);
+            mListener.onFragmentInteraction(DummyContent.RECEPTEN.get(position).id);
         }
     }
 
