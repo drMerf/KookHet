@@ -79,6 +79,7 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1));
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }
