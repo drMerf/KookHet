@@ -57,10 +57,10 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         }
     }
 
-    public void onSectionAttached(int number) {
+    public void onSectionAttached(int number, String text) {
         switch (number) {
             case 0:
-                mTitle = "Title";
+                mTitle = text;
                 break;
             case 1:
                 mTitle = getString(R.string.title_section1);
@@ -141,7 +141,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
+            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER), null);
         }
     }
 

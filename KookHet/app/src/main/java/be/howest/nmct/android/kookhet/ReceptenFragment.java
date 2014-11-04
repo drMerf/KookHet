@@ -86,9 +86,9 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
             // 1 - Rechtstreeks uit de navigationdrawer, met een waarde als id. Ik wil dus hebben dat de titel hetzelfde wordt als hetgeen ik aangeklikt heb in de drawer
             // 2 - Vanuit categorienfragment, met 0 als id. De titel moet in dit geval de categorie worden, wat dus een custom titel word (idem als wanneer een recept gekozen is).
             if (getArguments().getInt(ARG_PARAM1) != 0){
-                ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1));
+                ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1), null);
             } else {
-                ((MainActivity) activity).onSectionAttached(0);
+                ((MainActivity) activity).onSectionAttached(0, "Categorie");
                 ((MainActivity) activity).restoreActionBar();
             }
 

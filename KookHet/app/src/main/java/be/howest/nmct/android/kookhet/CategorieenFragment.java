@@ -80,7 +80,7 @@ public class CategorieenFragment extends Fragment implements AbsListView.OnItemC
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
-            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1));
+            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1), null);
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }
