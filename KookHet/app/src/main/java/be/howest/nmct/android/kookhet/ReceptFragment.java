@@ -65,6 +65,7 @@ public class ReceptFragment extends Fragment {
         try {
             mListener = (OnFragmentInteractionListener) activity;
             ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1));
+            ((MainActivity) activity).restoreActionBar();
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }

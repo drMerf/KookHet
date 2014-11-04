@@ -1,8 +1,10 @@
 package be.howest.nmct.android.kookhet;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +81,17 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
-            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1));
+
+            // Receptenfragment wordt op 2 manieren gestart:
+            // 1 - Rechtstreeks uit de navigationdrawer, met een waarde als id. Ik wil dus hebben dat de titel hetzelfde wordt als hetgeen ik aangeklikt heb in de drawer
+            // 2 - Vanuit categorienfragment, met 0 als id. De titel moet in dit geval de categorie worden, wat dus een custom titel word (idem als wanneer een recept gekozen is).
+            if (getArguments().getInt(ARG_PARAM1) != 0){
+                ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1));
+            } else {
+                ((MainActivity) activity).onSectionAttached(0);
+                ((MainActivity) activity).restoreActionBar();
+            }
+
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }
@@ -96,6 +108,10 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the fragment is attached to one) that an item has been selected.
             mListener.onFragmentInteraction(DummyContent.RECEPTEN.get(position).id);
+
+            // Bij klikken op recept, details van het recept ophalen
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container, ReceptFragment.newInstance(0)).commit();
         }
     }
 

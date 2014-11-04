@@ -1,7 +1,6 @@
 package be.howest.nmct.android.kookhet;
 
 import android.app.Activity;
-
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -60,6 +59,9 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 
     public void onSectionAttached(int number) {
         switch (number) {
+            case 0:
+                mTitle = "Title";
+                break;
             case 1:
                 mTitle = getString(R.string.title_section1);
                 break;

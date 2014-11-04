@@ -1,6 +1,7 @@
 package be.howest.nmct.android.kookhet;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -96,6 +97,10 @@ public class CategorieenFragment extends Fragment implements AbsListView.OnItemC
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the fragment is attached to one) that an item has been selected.
             mListener.onFragmentInteraction(DummyContent.CATEGORIEEN.get(position).id);
+
+            // Bij klikken op categorie, lijst recepten in categorie ophalen
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(0)).commit();
         }
     }
 
