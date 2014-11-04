@@ -13,36 +13,30 @@ import android.view.ViewGroup;
 // Use the {@link InstellingenFragment#newInstance} factory method to create an instance of this fragment.
 public class InstellingenFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_NavigatieId = "NavigatieId";
 
-    // TODO: Rename and change types of parameters
-    private int mParam1;
+    private int mNavigatieId;
 
     private OnFragmentInteractionListener mListener;
 
     // Use this factory method to create a new instance of this fragment using the provided parameters.
-    // @param param1 Parameter 1.
-    // @param param2 Parameter 2.
-    // @return A new instance of fragment InstellingenFragment.
-    // TODO: Rename and change types and number of parameters
-    public static InstellingenFragment newInstance(int param1) {
+    public static InstellingenFragment newInstance(int NavigatieId) {
         InstellingenFragment fragment = new InstellingenFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, param1);
+        args.putInt(ARG_NavigatieId, NavigatieId);
         fragment.setArguments(args);
         return fragment;
     }
-    public InstellingenFragment() {
-        // Required empty public constructor
-    }
+
+    // Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen orientation changes).
+    public InstellingenFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
+            mNavigatieId = getArguments().getInt(ARG_NavigatieId);
         }
     }
 
@@ -64,7 +58,7 @@ public class InstellingenFragment extends Fragment {
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
-            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1), null);
+            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_NavigatieId), null);
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }

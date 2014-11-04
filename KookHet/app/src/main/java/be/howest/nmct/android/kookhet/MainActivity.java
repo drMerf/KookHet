@@ -43,10 +43,10 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
                 fragmentManager.beginTransaction().replace(R.id.container, CategorieenFragment.newInstance(position + 1)).commit();
                 break;
             case 1:
-                fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(position + 1)).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(position + 1, null)).commit();
                 break;
             case 2:
-                fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(position + 1)).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(position + 1, null)).commit();
                 break;
             case 3:
                 fragmentManager.beginTransaction().replace(R.id.container, InstellingenFragment.newInstance(position + 1)).commit();
@@ -129,8 +129,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
             return fragment;
         }
 
-        public PlaceholderFragment() {
-        }
+        public PlaceholderFragment() {}
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

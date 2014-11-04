@@ -21,40 +21,37 @@ import be.howest.nmct.android.kookhet.dummy.DummyContent;
 // Activities containing this fragment MUST implement the {@link Callbacks} interface.
 public class CategorieenFragment extends Fragment implements AbsListView.OnItemClickListener {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    // The fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_NavigatieId = "NavigatieId";
 
-    // TODO: Rename and change types of parameters
-    private int mParam1;
+    private int mNavigatieId;
 
     private OnFragmentInteractionListener mListener;
 
-    //The fragment's ListView/GridView.
+    // The fragment's ListView/GridView.
     private AbsListView mListView;
 
-    //The Adapter which will be used to populate the ListView/GridView with Views.
+    // The Adapter which will be used to populate the ListView/GridView with Views.
     private ListAdapter mAdapter;
 
-    // TODO: Rename and change types of parameters
-    public static CategorieenFragment newInstance(int param1) {
+    // Use this factory method to create a new instance of this fragment using the provided parameters.
+    public static CategorieenFragment newInstance(int NavigatieId) {
         CategorieenFragment fragment = new CategorieenFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, param1);
+        args.putInt(ARG_NavigatieId, NavigatieId);
         fragment.setArguments(args);
         return fragment;
     }
 
     // Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen orientation changes).
-    public CategorieenFragment() {
-    }
+    public CategorieenFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
+            mNavigatieId = getArguments().getInt(ARG_NavigatieId);
         }
 
         // TODO: Change Adapter to display your content
@@ -80,7 +77,11 @@ public class CategorieenFragment extends Fragment implements AbsListView.OnItemC
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
-            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1), null);
+
+            // Categorienfragment kan maar op 1 manier gestart worden:
+            // - Vanuit de navigationdrawer, met een waarde als id. De titel is hetzelfde als het aangeklikte item in de naviagtiondrawer.
+            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_NavigatieId), null);
+
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }
@@ -100,7 +101,7 @@ public class CategorieenFragment extends Fragment implements AbsListView.OnItemC
 
             // Bij klikken op categorie, lijst recepten in categorie ophalen
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(0)).commit();
+            fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(0, parent.getItemAtPosition(position).toString())).commit();
         }
     }
 
