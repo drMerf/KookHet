@@ -1,9 +1,9 @@
 package be.howest.nmct.android.kookhet;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +58,11 @@ public class InstellingenFragment extends Fragment {
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+
+            // Instellingenfragment kan maar op 1 manier gestart worden:
+            // - Vanuit de navigationdrawer, met een waarde als id. De titel is hetzelfde als het aangeklikte item in de naviagtiondrawer.
             ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_NavigatieId), null);
+
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }
