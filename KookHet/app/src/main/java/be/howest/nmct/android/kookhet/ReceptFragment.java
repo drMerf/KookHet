@@ -1,9 +1,9 @@
 package be.howest.nmct.android.kookhet;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +15,21 @@ public class ReceptFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_NavigatieId = "NavigatieId";
+    private static final String ARG_CategorieNaam = "CategorieNaam";
     private static final String ARG_ReceptNaam = "ReceptNaam";
 
     private int mNavigatieId;
+    private String mCategorieNaam;
     private String mReceptNaam;
 
     private OnFragmentInteractionListener mListener;
 
     // Use this factory method to create a new instance of this fragment using the provided parameters.
-    public static ReceptFragment newInstance(int NavigatieId, String ReceptNaam) {
+    public static ReceptFragment newInstance(int NavigatieId, String CategorieNaam, String ReceptNaam) {
         ReceptFragment fragment = new ReceptFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_NavigatieId, NavigatieId);
+        args.putString(ARG_CategorieNaam, CategorieNaam);
         args.putString(ARG_ReceptNaam, ReceptNaam);
         fragment.setArguments(args);
         return fragment;
@@ -40,6 +43,7 @@ public class ReceptFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mNavigatieId = getArguments().getInt(ARG_NavigatieId);
+            mCategorieNaam = getArguments().getString(ARG_CategorieNaam);
             mReceptNaam = getArguments().getString(ARG_ReceptNaam);
         }
     }
@@ -64,7 +68,7 @@ public class ReceptFragment extends Fragment {
             mListener = (OnFragmentInteractionListener) activity;
 
             // Receptfragment kan maar op 1 manier gestart worden:
-            // - Vanuit receptenfragment, met 0 als id. De titel is een custom waarde, nl. de naam van een recept.
+            // - Vanuit receptenfragment, met een receptnaam. De titel is een custom waarde, nl. de naam van een recept.
             ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_NavigatieId), getArguments().getString(ARG_ReceptNaam));
             ((MainActivity) activity).restoreActionBar();
 

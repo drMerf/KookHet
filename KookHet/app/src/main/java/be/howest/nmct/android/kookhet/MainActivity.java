@@ -57,22 +57,23 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
     }
 
     public void onSectionAttached(int number, String text) {
-        switch (number) {
-            case 0:
-                mTitle = text;
-                break;
-            case 1:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
-            case 4:
-                mTitle = getString(R.string.title_section4);
-                break;
+        if (text != null){
+            mTitle = text;
+        } else {
+            switch (number) {
+                case 1:
+                    mTitle = getString(R.string.title_section1);
+                    break;
+                case 2:
+                    mTitle = getString(R.string.title_section2);
+                    break;
+                case 3:
+                    mTitle = getString(R.string.title_section3);
+                    break;
+                case 4:
+                    mTitle = getString(R.string.title_section4);
+                    break;
+            }
         }
     }
 

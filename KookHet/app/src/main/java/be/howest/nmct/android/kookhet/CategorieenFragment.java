@@ -100,7 +100,10 @@ public class CategorieenFragment extends Fragment implements AbsListView.OnItemC
 
             // Bij klikken op categorie, lijst recepten in categorie ophalen
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(0, parent.getItemAtPosition(position).toString())).commit();
+            fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(
+                    getArguments().getInt(ARG_NavigatieId),
+                    parent.getItemAtPosition(position).toString()
+            )).commit();
         }
     }
 

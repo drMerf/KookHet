@@ -82,9 +82,9 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
             mListener = (OnFragmentInteractionListener) activity;
 
             // Receptenfragment kan op 2 manieren gestart worden:
-            // - Vanuit de navigationdrawer, met een waarde als id. De titel is hetzelfde als het aangeklikte item in de naviagtiondrawer.
-            // - Vanuit categorieenfragment, met 0 als id. De titel is een custom waarde, nl. de naam van een categorie.
-            if (getArguments().getInt(ARG_NavigatieId) != 0){
+            // - Vanuit de navigationdrawer, zonder een categorienaam. De titel is hetzelfde als het aangeklikte item in de naviagtiondrawer.
+            // - Vanuit categorieenfragment, met een categorienaam. De titel is een custom waarde, nl. de naam van een categorie.
+            if (getArguments().getString(ARG_CategorieNaam) == null){ // if (getArguments().getInt(ARG_NavigatieId) != 0){
                 ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_NavigatieId), null);
             } else {
                 ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_NavigatieId), getArguments().getString(ARG_CategorieNaam));
@@ -110,7 +110,11 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
 
             // Bij klikken op recept, details van het recept ophalen
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.container, ReceptFragment.newInstance(0, parent.getItemAtPosition(position).toString())).commit();
+            fragmentManager.beginTransaction().replace(R.id.container, ReceptFragment.newInstance(
+                    getArguments().getInt(ARG_NavigatieId),
+                    getArguments().getString(ARG_CategorieNaam),
+                    parent.getItemAtPosition(position).toString()
+            )).commit();
         }
     }
 
