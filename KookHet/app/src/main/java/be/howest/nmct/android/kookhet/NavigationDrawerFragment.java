@@ -1,15 +1,15 @@
 package be.howest.nmct.android.kookhet;
 
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,7 +41,7 @@ public class NavigationDrawerFragment extends Fragment {
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = 0; // Default selected item
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
@@ -57,8 +57,11 @@ public class NavigationDrawerFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
+        } else {
+            selectItem(mCurrentSelectedPosition); // Select either the default item (0) or the last selected item.
         }
-        selectItem(mCurrentSelectedPosition); // Select either the default item (0) or the last selected item.
+        // Verplaatst naar else omdat telkens je de orientatie draaide er terug het fragment getoond werd waaruit je starte, bv: Selecteer categorie > selecteer recept > draai > categoriefragment word getoond ipv receptenfragment
+        // selectItem(mCurrentSelectedPosition); // Select either the default item (0) or the last selected item.
     }
 
     @Override

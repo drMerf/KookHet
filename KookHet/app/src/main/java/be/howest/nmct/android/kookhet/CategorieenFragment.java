@@ -2,6 +2,7 @@ package be.howest.nmct.android.kookhet;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CursorAdapter;
 import android.widget.ListAdapter;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import be.howest.nmct.android.kookhet.dummy.DummyContent;
@@ -20,65 +19,64 @@ import be.howest.nmct.android.kookhet.dummy.DummyContent;
 // Large screen devices (such as tablets) are supported by replacing the ListView with a GridView.
 // Activities containing this fragment MUST implement the {@link Callbacks} interface.
 public class CategorieenFragment extends Fragment implements AbsListView.OnItemClickListener {
-//private ArrayList<Categorie> categorieën= new ArrayList<Categorie>();
-        private static final String ARG_PARAM1 = "param1";
-       private int mParam1;
+
+    // The fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_NavigatieId = "NavigatieId";
+
+    private static final String KEY_NavigatieId = "NavigatieId";
+
+    private int mNavigatieId;
+
     private OnFragmentInteractionListener mListener;
-private CursorAdapter mAdapter;
+
+    // The fragment's ListView/GridView.
     private AbsListView mListView;
 
+    // The Adapter which will be used to populate the ListView/GridView with Views.
+    private ListAdapter mAdapter;
 
-    // TODO: Rename and change types of parameters
-    public static CategorieenFragment newInstance(int param1) {
+    // Use this factory method to create a new instance of this fragment using the provided parameters.
+    public static CategorieenFragment newInstance(int NavigatieId) {
         CategorieenFragment fragment = new CategorieenFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, param1);
+        args.putInt(ARG_NavigatieId, NavigatieId);
         fragment.setArguments(args);
         return fragment;
     }
 
     // Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen orientation changes).
-    public CategorieenFragment() {
-    }
+    public CategorieenFragment() {}
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+
+            // Categorienfragment kan maar op 1 manier gestart worden:
+            // - Vanuit de navigationdrawer, met een waarde als id. De titel is hetzelfde als het aangeklikte item in de naviagtiondrawer.
+            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_NavigatieId), null);
+
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState==null) {
-        Bundle args = getArguments();
+
+        if (savedInstanceState != null) {
+            mNavigatieId = savedInstanceState.getInt(KEY_NavigatieId);
+        }
+        else {
             if (getArguments() != null) {
-                mParam1 = getArguments().getInt(ARG_PARAM1);
+                mNavigatieId = getArguments().getInt(ARG_NavigatieId);
             }
-            if (args != null) {
-                int order = args.getInt(ARG_PARAM1, 0);
-                if (order != 0)
-                    mParam1 = order;
-                }
-            String[] columns = new String[] {DummyContent.CATEGORIEEN.toString()};
-            int[] ViewIds = new int[]{R.id.textViewNaam};
-
-            mAdapter = new SimpleCursorAdapter(getActivity(),R.id.textViewNaam,null,columns,ViewIds,0);
-            //  mAdapter = new ArrayAdapter<DummyContent.Categorie>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.CATEGORIEEN);
-//setAdapter
-        }
-    }
-
-    class CategorieAdapter  extends ArrayAdapter<DummyContent.Categorie>{
-        public CategorieAdapter(){
-super(CategorieenFragment.this.getActivity(),R.layout.cel_categorie,R.id.textViewNaam,DummyContent.CATEGORIEEN);
-
-
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-           View row = super.getView(position, convertView, parent);
-            TextView textViewCategorieNaam = (TextView) row.findViewById(R.id.textViewNaam);
-
-
-            return row;
-        }
+        // TODO: Change Adapter to display your content
+        mAdapter = new ArrayAdapter<DummyContent.Categorie>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.CATEGORIEEN);
     }
 
     @Override
@@ -96,26 +94,15 @@ super(CategorieenFragment.this.getActivity(),R.layout.cel_categorie,R.id.textVie
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1));
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-//getLoaderManager().initLoader(0,null,this);
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_NavigatieId, mNavigatieId);
     }
 
     @Override
@@ -123,6 +110,13 @@ super(CategorieenFragment.this.getActivity(),R.layout.cel_categorie,R.id.textVie
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the fragment is attached to one) that an item has been selected.
             mListener.onFragmentInteraction(DummyContent.CATEGORIEEN.get(position).id);
+
+            // Bij klikken op categorie, lijst recepten in categorie ophalen
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container, ReceptenFragment.newInstance(
+                    getArguments().getInt(ARG_NavigatieId),
+                    parent.getItemAtPosition(position).toString()
+            )).commit();
         }
     }
 
