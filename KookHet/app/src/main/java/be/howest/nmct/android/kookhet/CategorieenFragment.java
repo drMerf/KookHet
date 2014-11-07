@@ -1,17 +1,18 @@
 package be.howest.nmct.android.kookhet;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ListAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-
 
 import be.howest.nmct.android.kookhet.dummy.DummyContent;
 
@@ -19,21 +20,13 @@ import be.howest.nmct.android.kookhet.dummy.DummyContent;
 // Large screen devices (such as tablets) are supported by replacing the ListView with a GridView.
 // Activities containing this fragment MUST implement the {@link Callbacks} interface.
 public class CategorieenFragment extends Fragment implements AbsListView.OnItemClickListener {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-
-    // TODO: Rename and change types of parameters
-    private int mParam1;
-
+//private ArrayList<Categorie> categorieën= new ArrayList<Categorie>();
+        private static final String ARG_PARAM1 = "param1";
+       private int mParam1;
     private OnFragmentInteractionListener mListener;
-
-    //The fragment's ListView/GridView.
+private CursorAdapter mAdapter;
     private AbsListView mListView;
 
-    //The Adapter which will be used to populate the ListView/GridView with Views.
-    private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
     public static CategorieenFragment newInstance(int param1) {
@@ -48,16 +41,44 @@ public class CategorieenFragment extends Fragment implements AbsListView.OnItemC
     public CategorieenFragment() {
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState==null) {
+        Bundle args = getArguments();
+            if (getArguments() != null) {
+                mParam1 = getArguments().getInt(ARG_PARAM1);
+            }
+            if (args != null) {
+                int order = args.getInt(ARG_PARAM1, 0);
+                if (order != 0)
+                    mParam1 = order;
+                }
+            String[] columns = new String[] {DummyContent.CATEGORIEEN.toString()};
+            int[] ViewIds = new int[]{R.id.textViewNaam};
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
+            mAdapter = new SimpleCursorAdapter(getActivity(),R.id.textViewNaam,null,columns,ViewIds,0);
+            //  mAdapter = new ArrayAdapter<DummyContent.Categorie>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.CATEGORIEEN);
+//setAdapter
+        }
+    }
+
+    class CategorieAdapter  extends ArrayAdapter<DummyContent.Categorie>{
+        public CategorieAdapter(){
+super(CategorieenFragment.this.getActivity(),R.layout.cel_categorie,R.id.textViewNaam,DummyContent.CATEGORIEEN);
+
+
         }
 
-        // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.Categorie>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.CATEGORIEEN);
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+           View row = super.getView(position, convertView, parent);
+            TextView textViewCategorieNaam = (TextView) row.findViewById(R.id.textViewNaam);
+
+
+            return row;
+        }
     }
 
     @Override
@@ -83,6 +104,12 @@ public class CategorieenFragment extends Fragment implements AbsListView.OnItemC
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+//getLoaderManager().initLoader(0,null,this);
     }
 
     @Override
