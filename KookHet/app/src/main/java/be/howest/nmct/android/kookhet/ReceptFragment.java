@@ -13,10 +13,14 @@ import android.view.ViewGroup;
 // Use the {@link ReceptFragment#newInstance} factory method to create an instance of this fragment.
 public class ReceptFragment extends Fragment {
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    // The fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_NavigatieId = "NavigatieId";
     private static final String ARG_CategorieNaam = "CategorieNaam";
     private static final String ARG_ReceptNaam = "ReceptNaam";
+
+    private static final String KEY_NavigatieId = "NavigatieId";
+    private static final String KEY_CategorieNaam = "CategorieNaam";
+    private static final String KEY_ReceptNaam = "ReceptNaam";
 
     private int mNavigatieId;
     private String mCategorieNaam;
@@ -39,29 +43,6 @@ public class ReceptFragment extends Fragment {
     public ReceptFragment() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mNavigatieId = getArguments().getInt(ARG_NavigatieId);
-            mCategorieNaam = getArguments().getString(ARG_CategorieNaam);
-            mReceptNaam = getArguments().getString(ARG_ReceptNaam);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recept, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -78,9 +59,48 @@ public class ReceptFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mNavigatieId = savedInstanceState.getInt(KEY_NavigatieId);
+            mCategorieNaam = savedInstanceState.getString(KEY_CategorieNaam);
+            mReceptNaam = savedInstanceState.getString(KEY_ReceptNaam);
+        }
+        else {
+            if (getArguments() != null) {
+                mNavigatieId = getArguments().getInt(ARG_NavigatieId);
+                mCategorieNaam = getArguments().getString(ARG_CategorieNaam);
+                mReceptNaam = getArguments().getString(ARG_ReceptNaam);
+            }
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_recept, container, false);
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_NavigatieId, mNavigatieId);
+        outState.putString(KEY_CategorieNaam, mCategorieNaam);
+        outState.putString(KEY_ReceptNaam, mReceptNaam);
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     // This interface must be implemented by activities that contain this fragment to allow an interaction in this fragment to be communicated to the activity and potentially other fragments contained in that activity.

@@ -24,6 +24,9 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
     private static final String ARG_NavigatieId = "NavigatieId";
     private static final String ARG_CategorieNaam = "CategorieNaam";
 
+    private static final String KEY_NavigatieId = "NavigatieId";
+    private static final String KEY_CategorieNaam = "CategorieNaam";
+
     private int mNavigatieId;
     private String mCategorieNaam;
 
@@ -49,33 +52,6 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
     public ReceptenFragment() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mNavigatieId = getArguments().getInt(ARG_NavigatieId);
-            mCategorieNaam = getArguments().getString(ARG_CategorieNaam);
-        }
-
-        // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.Recept>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.RECEPTEN);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recepten, container, false);
-
-        // Set the adapter
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-
-        // Set OnItemClickListener so we can be notified on item clicks
-        mListView.setOnItemClickListener(this);
-
-        return view;
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -97,9 +73,49 @@ public class ReceptenFragment extends Fragment implements AbsListView.OnItemClic
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mNavigatieId = savedInstanceState.getInt(KEY_NavigatieId);
+            mCategorieNaam = savedInstanceState.getString(KEY_CategorieNaam);
+        }
+        else {
+            if (getArguments() != null) {
+                mNavigatieId = getArguments().getInt(ARG_NavigatieId);
+                mCategorieNaam = getArguments().getString(ARG_CategorieNaam);
+            }
+        }
+
+        // TODO: Change Adapter to display your content
+        mAdapter = new ArrayAdapter<DummyContent.Recept>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.RECEPTEN);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_recepten, container, false);
+
+        // Set the adapter
+        mListView = (AbsListView) view.findViewById(android.R.id.list);
+        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+
+        // Set OnItemClickListener so we can be notified on item clicks
+        mListView.setOnItemClickListener(this);
+
+        return view;
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_NavigatieId, mNavigatieId);
+        outState.putString(KEY_CategorieNaam, mCategorieNaam);
     }
 
     @Override

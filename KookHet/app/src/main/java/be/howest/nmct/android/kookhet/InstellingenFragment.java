@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 // Use the {@link InstellingenFragment#newInstance} factory method to create an instance of this fragment.
 public class InstellingenFragment extends Fragment {
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    // The fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_NavigatieId = "NavigatieId";
 
     private int mNavigatieId;
@@ -33,27 +33,6 @@ public class InstellingenFragment extends Fragment {
     public InstellingenFragment() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mNavigatieId = getArguments().getInt(ARG_NavigatieId);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_instellingen, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -69,9 +48,42 @@ public class InstellingenFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mNavigatieId = savedInstanceState.getInt(ARG_NavigatieId);
+        }
+        else {
+            if (getArguments() != null) {
+                mNavigatieId = getArguments().getInt(ARG_NavigatieId);
+            }
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_instellingen, container, false);
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(ARG_NavigatieId, mNavigatieId);
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     // This interface must be implemented by activities that contain this fragment to allow an interaction in this fragment to be communicated to the activity and potentially other fragments contained in that activity.

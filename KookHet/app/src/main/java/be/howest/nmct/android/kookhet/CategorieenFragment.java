@@ -23,6 +23,8 @@ public class CategorieenFragment extends Fragment implements AbsListView.OnItemC
     // The fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_NavigatieId = "NavigatieId";
 
+    private static final String KEY_NavigatieId = "NavigatieId";
+
     private int mNavigatieId;
 
     private OnFragmentInteractionListener mListener;
@@ -46,11 +48,31 @@ public class CategorieenFragment extends Fragment implements AbsListView.OnItemC
     public CategorieenFragment() {}
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+
+            // Categorienfragment kan maar op 1 manier gestart worden:
+            // - Vanuit de navigationdrawer, met een waarde als id. De titel is hetzelfde als het aangeklikte item in de naviagtiondrawer.
+            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_NavigatieId), null);
+
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mNavigatieId = getArguments().getInt(ARG_NavigatieId);
+        if (savedInstanceState != null) {
+            mNavigatieId = savedInstanceState.getInt(KEY_NavigatieId);
+        }
+        else {
+            if (getArguments() != null) {
+                mNavigatieId = getArguments().getInt(ARG_NavigatieId);
+            }
         }
 
         // TODO: Change Adapter to display your content
@@ -72,24 +94,15 @@ public class CategorieenFragment extends Fragment implements AbsListView.OnItemC
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-
-            // Categorienfragment kan maar op 1 manier gestart worden:
-            // - Vanuit de navigationdrawer, met een waarde als id. De titel is hetzelfde als het aangeklikte item in de naviagtiondrawer.
-            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_NavigatieId), null);
-
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_NavigatieId, mNavigatieId);
     }
 
     @Override
