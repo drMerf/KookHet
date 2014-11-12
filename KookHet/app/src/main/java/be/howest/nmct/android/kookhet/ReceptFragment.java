@@ -1,78 +1,48 @@
 package be.howest.nmct.android.kookhet;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 // A simple {@link Fragment} subclass.
-// Activities that contain this fragment must implement the {@link ReceptFragment.OnFragmentInteractionListener} interface to handle interaction events.
-// Use the {@link ReceptFragment#newInstance} factory method to create an instance of this fragment.
+// Activities that contain this fragment must implement the {@link InstellingenFragment.OnFragmentInteractionListener} interface to handle interaction events.
+// Use the {@link InstellingenFragment#newInstance} factory method to create an instance of this fragment.
 public class ReceptFragment extends Fragment {
 
-    // The fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_NavigatieId = "NavigatieId";
-    private static final String ARG_CategorieNaam = "CategorieNaam";
-    private static final String ARG_ReceptNaam = "ReceptNaam";
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
 
-    private static final String KEY_NavigatieId = "NavigatieId";
-    private static final String KEY_CategorieNaam = "CategorieNaam";
-    private static final String KEY_ReceptNaam = "ReceptNaam";
-
-    private int mNavigatieId;
-    private String mCategorieNaam;
-    private String mReceptNaam;
+    // TODO: Rename and change types of parameters
+    private int mParam1;
 
     private OnFragmentInteractionListener mListener;
 
     // Use this factory method to create a new instance of this fragment using the provided parameters.
-    public static ReceptFragment newInstance(int NavigatieId, String CategorieNaam, String ReceptNaam) {
+    // @param param1 Parameter 1.
+    // @param param2 Parameter 2.
+    // @return A new instance of fragment InstellingenFragment.
+    // TODO: Rename and change types and number of parameters
+    public static ReceptFragment newInstance(int param1) {
         ReceptFragment fragment = new ReceptFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_NavigatieId, NavigatieId);
-        args.putString(ARG_CategorieNaam, CategorieNaam);
-        args.putString(ARG_ReceptNaam, ReceptNaam);
+        args.putInt(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
-
-    // Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen orientation changes).
-    public ReceptFragment() {}
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-
-            // Receptfragment kan maar op 1 manier gestart worden:
-            // - Vanuit receptenfragment, met een receptnaam. De titel is een custom waarde, nl. de naam van een recept.
-            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_NavigatieId), getArguments().getString(ARG_ReceptNaam));
-            ((MainActivity) activity).restoreActionBar();
-
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
-        }
+    public ReceptFragment() {
+        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            mNavigatieId = savedInstanceState.getInt(KEY_NavigatieId);
-            mCategorieNaam = savedInstanceState.getString(KEY_CategorieNaam);
-            mReceptNaam = savedInstanceState.getString(KEY_ReceptNaam);
-        }
-        else {
-            if (getArguments() != null) {
-                mNavigatieId = getArguments().getInt(ARG_NavigatieId);
-                mCategorieNaam = getArguments().getString(ARG_CategorieNaam);
-                mReceptNaam = getArguments().getString(ARG_ReceptNaam);
-            }
+        if (getArguments() != null) {
+            mParam1 = getArguments().getInt(ARG_PARAM1);
         }
     }
 
@@ -82,25 +52,28 @@ public class ReceptFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_recept, container, false);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(KEY_NavigatieId, mNavigatieId);
-        outState.putString(KEY_CategorieNaam, mCategorieNaam);
-        outState.putString(KEY_ReceptNaam, mReceptNaam);
-    }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+            ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_PARAM1));
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     // This interface must be implemented by activities that contain this fragment to allow an interaction in this fragment to be communicated to the activity and potentially other fragments contained in that activity.
